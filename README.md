@@ -22,6 +22,11 @@ The schema includes customers, admin roles, products, categories, carts, orders,
 - `admin/`: protected dashboard and management views
 - `includes/`: shared layout helpers
 - `database/schema.sql`: schema and sample catalog data
+- `database/catalog_seed.sql`: add-on catalog migration for existing installations
 - `assets/`: responsive CSS and progressive enhancement JavaScript
 
 The application uses PDO prepared statements, password hashing, CSRF tokens, escaped output, secure session cookies, role checks and validated newsletter/contact inputs. Replace the placeholder contact details and canonical domain before deployment, and configure HTTPS in production.
+
+### Add the expanded catalog to an existing database
+
+Import `database/catalog_seed.sql` in phpMyAdmin after the original schema. It adds more fertilized eggs, broilers, layers, poultry feeds and equipment without duplicating products already present.

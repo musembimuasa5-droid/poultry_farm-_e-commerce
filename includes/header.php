@@ -25,12 +25,12 @@ $user = current_user();
 <div class="announcement">Free delivery on orders over KSh 5,000 <span>•</span> Farm fresh, every morning</div>
 <header class="site-header">
     <div class="container nav-wrap">
-        <a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><span class="brand-name">Golden Eggs</span><small>& Chicks Farm</small></span></a>
+        <a class="brand" href="index.php"><img class="brand-logo" src="assets/images/logo.png" alt="Golden Eggs & Chicks Farm" width="160" height="64" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"><span class="brand-fallback"><span class="brand-mark">✦</span><span class="brand-copy"><span class="brand-name">Golden Eggs</span><small>& Chicks Farm</small></span></span></a>
         <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
         <nav class="main-nav" aria-label="Main navigation">
             <a class="<?= $active === 'index.php' ? 'active' : '' ?>" href="index.php">Home</a>
             <a class="<?= $active === 'shop.php' ? 'active' : '' ?>" href="shop.php">Shop</a>
-            <a class="<?= $active === 'about.php' ? 'active' : '' ?>" href="about.php">Our farm</a>
+            <a class="<?= $active === 'about.php' ? 'active' : '' ?>" href="about.php">About</a>
             <a class="<?= $active === 'contact.php' ? 'active' : '' ?>" href="contact.php">Contact</a>
         </nav>
         <div class="nav-actions">

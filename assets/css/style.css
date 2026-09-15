@@ -14,6 +14,7 @@
 @media(max-width:800px){.product-detail-grid{grid-template-columns:1fr;gap:30px}.gallery-main{height:320px}.nav-search input{width:120px}.order-tracking{display:block}.order-tracking .tracking-step{border-top:0;border-left:2px solid var(--line);padding:10px 18px}.order-tracking .tracking-step.complete{border-color:var(--green)}}
 .brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;line-height:1}
 .brand-mark{color:#f9a825;font-size:2rem}
+.brand-logo{display:block;width:160px;height:64px;object-fit:contain}.brand-fallback{display:none;align-items:center;gap:10px}
 .brand-copy{display:block}
 .brand-name{display:block;color:var(--ink);font:800 1.3rem/1 Manrope,sans-serif;letter-spacing:-.04em;white-space:nowrap}
 .brand small{display:block;margin-top:6px;color:var(--green);font-size:.72rem;line-height:1}
