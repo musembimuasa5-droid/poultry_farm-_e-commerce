@@ -22,6 +22,26 @@ if (searchInput && searchResults) {
     }, 300);
   });
 }
+const shopSearch = document.querySelector('.shop-toolbar input[name="q"]');
+const shopGrid = document.querySelector('.shop-toolbar')?.nextElementSibling;
+if (shopSearch && shopGrid) {
+  const samples = ['Layers mash 10kg', 'Kienyeji day-old chicks', 'Kienyeji fertile eggs', 'Farm crate', 'Growers mash', 'Calcium supplement', 'Poultry feeder', 'Chick mash', 'Layers starter pack'];
+  const sampleBar = document.createElement('div');
+  sampleBar.className = 'search-samples';
+  sampleBar.innerHTML = '<span>Try:</span>' + samples.map(sample => `<button type="button" data-search-sample="${sample}">${sample}</button>`).join('');
+  shopSearch.closest('form').after(sampleBar);
+  let shopTimer;
+  const filterShopCards = () => {
+    const query = shopSearch.value.trim().toLowerCase();
+    const cards = [...shopGrid.querySelectorAll('.product-card')];
+    let visible = 0;
+    cards.forEach(card => { const match = !query || card.textContent.toLowerCase().includes(query); card.hidden = !match; if (match) visible++; });
+    const count = document.querySelector('.shop-toolbar strong');
+    if (count) count.textContent = `${visible} products`;
+  };
+  shopSearch.addEventListener('input', () => { clearTimeout(shopTimer); shopTimer = setTimeout(filterShopCards, 300); });
+  sampleBar.addEventListener('click', event => { const button = event.target.closest('[data-search-sample]'); if (!button) return; shopSearch.value = button.dataset.searchSample; filterShopCards(); });
+}
 document.querySelectorAll('[data-gallery-image]').forEach(button => button.addEventListener('click', () => {
   const image = document.querySelector('#main-product-image');
   if (image) image.src = button.dataset.galleryImage;
