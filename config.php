@@ -14,6 +14,7 @@ const LOW_STOCK_THRESHOLD = 5;
 header('X-Frame-Options: SAMEORIGIN');
 header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: strict-origin-when-cross-origin');
+header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https://images.unsplash.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; frame-ancestors 'self'");
 if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
     header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 }
@@ -141,4 +142,15 @@ function flash(string $type, string $message): void
 function current_user(): ?array
 {
     return $_SESSION['user'] ?? null;
+}
+
+function log_admin_activity(string $action, string $entityType, ?int $entityId = null, string $details = ''): void
+{
+    if (!current_user() || current_user()['role'] !== 'admin') return;
+    try {
+        $stmt = db()->prepare('INSERT INTO admin_activity_log (admin_id, action, entity_type, entity_id, details) VALUES (?,?,?,?,?)');
+        $stmt->execute([current_user()['id'], $action, $entityType, $entityId, $details]);
+    } catch (Throwable $exception) {
+        // Activity logging must not interrupt customer checkout or admin work.
+    }
 }

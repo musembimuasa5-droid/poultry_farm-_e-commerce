@@ -36,8 +36,16 @@ document.querySelectorAll('[data-add-cart]').forEach(button => button.addEventLi
   const id = button.dataset.addCart; localCart[id] = (localCart[id] || 0) + 1;
   localStorage.setItem('guestCart', JSON.stringify(localCart));
 }));
+const recentStrip = document.querySelector('[data-recent-products]');
+const recentIds = JSON.parse(localStorage.getItem('recentProducts') || '[]');
+if (recentStrip && recentIds.length) {
+  fetch(`recent.php?ids=${recentIds.join(',')}`).then(response => response.json()).then(products => {
+    recentStrip.innerHTML = products.map(product => `<a class="recent-product" href="product.php?id=${product.id}"><img src="${product.image || 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=300&q=80'}" alt="${product.name}" width="100" height="75" loading="lazy"><span>${product.name}</span></a>`).join('');
+  });
+}
 const guestCart = localStorage.getItem('guestCart');
 if (guestCart) {
   fetch('cart.php', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'}, body: `action=sync&cart=${encodeURIComponent(guestCart)}&csrf=${encodeURIComponent(document.body.dataset.csrf)}` })
-    .then(() => localStorage.removeItem('guestCart'));
+    .then(() => { localStorage.removeItem('guestCart'); if (location.pathname.endsWith('/cart.php') && !sessionStorage.getItem('cartHydrated')) { sessionStorage.setItem('cartHydrated', '1'); location.reload(); } });
 }
+  if (!location.pathname.endsWith('/cart.php')) sessionStorage.removeItem('cartHydrated');

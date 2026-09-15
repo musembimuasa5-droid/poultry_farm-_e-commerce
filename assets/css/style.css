@@ -1,3 +1,4 @@
+ .recent-strip{display:flex;gap:14px;overflow:auto}.recent-product{display:flex;align-items:center;gap:10px;min-width:220px;background:#fff;border:1px solid var(--line);padding:10px;border-radius:6px;font-weight:700;font-size:.82rem}.recent-product img{object-fit:cover;border-radius:4px}
 /* ===== Scroll-aware header ===== */
 :root{--ink:#26352a;--green:#2e7d32}
 .announcement{max-height:34px;overflow:hidden;transition:max-height .35s ease,padding .35s ease,opacity .35s ease}

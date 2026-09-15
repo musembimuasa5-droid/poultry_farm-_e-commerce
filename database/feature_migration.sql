@@ -1,0 +1,6 @@
+USE golden_eggs;
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified_at TIMESTAMP NULL DEFAULT NULL;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS verification_token CHAR(64) NULL DEFAULT NULL;
+UPDATE users SET email_verified_at = COALESCE(email_verified_at, created_at) WHERE email_verified_at IS NULL;
+CREATE TABLE IF NOT EXISTS admin_activity_log (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, admin_id INT UNSIGNED NOT NULL, action VARCHAR(120) NOT NULL, entity_type VARCHAR(50) NOT NULL, entity_id INT UNSIGNED, details TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE);
