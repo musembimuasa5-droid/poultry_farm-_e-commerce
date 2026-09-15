@@ -1,7 +1,16 @@
 /* ===== Scroll-aware header ===== */
+:root{--ink:#26352a;--green:#2e7d32}
 .announcement{max-height:34px;overflow:hidden;transition:max-height .35s ease,padding .35s ease,opacity .35s ease}
 .site-header.scrolled .announcement{max-height:0;padding-top:0;padding-bottom:0;opacity:0}
 .site-header{transition:box-shadow .35s ease,background .35s ease}
 .site-header.scrolled{background:rgba(255,255,255,.88);box-shadow:0 8px 30px rgba(32,61,39,.08)}
 .site-header.scrolled .nav-wrap{height:64px;transition:height .35s ease}
 .nav-wrap{transition:height .35s ease}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;line-height:1}
+.brand-mark{color:#f9a825;font-size:2rem}
+.brand-copy{display:block}
+.brand-name{display:block;color:var(--ink);font:800 1.3rem/1 Manrope,sans-serif;letter-spacing:-.04em;white-space:nowrap}
+.brand small{display:block;margin-top:6px;color:var(--green);font-size:.72rem;line-height:1}
+.footer-brand .brand-name{color:#fff}
+.footer-brand small{color:#cfe1cc}
+@media (max-width:800px){.brand-name{font-size:1.12rem}.brand-mark{font-size:1.7rem}}

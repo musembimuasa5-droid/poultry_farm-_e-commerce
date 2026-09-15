@@ -25,7 +25,7 @@ $user = current_user();
 <div class="announcement">Free delivery on orders over KSh 5,000 <span>•</span> Farm fresh, every morning</div>
 <header class="site-header">
     <div class="container nav-wrap">
-        <a class="brand" href="index.php"><span class="brand-mark">✦</span><span><strong>Golden Eggs</strong><small>& Chicks Farm</small></span></a>
+        <a class="brand" href="index.php"><span class="brand-mark">✦</span><span class="brand-copy"><span class="brand-name">Golden Eggs</span><small>& Chicks Farm</small></span></a>
         <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
         <nav class="main-nav" aria-label="Main navigation">
             <a class="<?= $active === 'index.php' ? 'active' : '' ?>" href="index.php">Home</a>
