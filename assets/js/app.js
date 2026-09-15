@@ -5,3 +5,39 @@ if (siteHeader) {
     siteHeader.classList.toggle('scrolled', window.scrollY > 40);
   }, { passive: true });
 }
+const searchInput = document.querySelector('[data-live-search]');
+const searchResults = document.querySelector('[data-search-results]');
+let searchTimer;
+if (searchInput && searchResults) {
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    const query = searchInput.value.trim();
+    if (query.length < 2) { searchResults.classList.remove('open'); searchResults.innerHTML = ''; return; }
+    searchResults.innerHTML = '<div class="skeleton" style="height:42px"></div><div class="skeleton" style="height:42px;margin-top:2px"></div>';
+    searchResults.classList.add('open');
+    searchTimer = setTimeout(async () => {
+      const response = await fetch(`search.php?q=${encodeURIComponent(query)}`);
+      const products = await response.json();
+      searchResults.innerHTML = products.length ? products.map(product => `<a href="product.php?id=${product.id}">${product.name}<strong style="float:right">KSh ${Number(product.price).toLocaleString()}</strong></a>`).join('') : '<div style="padding:12px;font-size:.82rem">No products found.</div>';
+    }, 300);
+  });
+}
+document.querySelectorAll('[data-gallery-image]').forEach(button => button.addEventListener('click', () => {
+  const image = document.querySelector('#main-product-image');
+  if (image) image.src = button.dataset.galleryImage;
+}));
+const productId = new URLSearchParams(window.location.search).get('id');
+if (productId) {
+  const viewed = JSON.parse(localStorage.getItem('recentProducts') || '[]').filter(id => id !== productId);
+  viewed.unshift(productId); localStorage.setItem('recentProducts', JSON.stringify(viewed.slice(0, 6)));
+}
+document.querySelectorAll('[data-add-cart]').forEach(button => button.addEventListener('click', () => {
+  const localCart = JSON.parse(localStorage.getItem('guestCart') || '{}');
+  const id = button.dataset.addCart; localCart[id] = (localCart[id] || 0) + 1;
+  localStorage.setItem('guestCart', JSON.stringify(localCart));
+}));
+const guestCart = localStorage.getItem('guestCart');
+if (guestCart) {
+  fetch('cart.php', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'}, body: `action=sync&cart=${encodeURIComponent(guestCart)}&csrf=${encodeURIComponent(document.body.dataset.csrf)}` })
+    .then(() => localStorage.removeItem('guestCart'));
+}

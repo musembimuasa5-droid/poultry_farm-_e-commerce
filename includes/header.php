@@ -21,7 +21,7 @@ $user = current_user();
     <link rel="stylesheet" href="assets/css/style.css">
     <script defer src="assets/js/app.js"></script>
 </head>
-<body>
+<body data-csrf="<?= e(csrf_token()) ?>" data-authenticated="<?= $user ? '1' : '0' ?>">
 <div class="announcement">Free delivery on orders over KSh 5,000 <span>•</span> Farm fresh, every morning</div>
 <header class="site-header">
     <div class="container nav-wrap">
@@ -34,7 +34,7 @@ $user = current_user();
             <a class="<?= $active === 'contact.php' ? 'active' : '' ?>" href="contact.php">Contact</a>
         </nav>
         <div class="nav-actions">
-            <a class="icon-link" href="shop.php" aria-label="Search">⌕</a>
+            <div class="nav-search"><input type="search" data-live-search placeholder="Search products" aria-label="Search products"><div class="search-results" data-search-results></div></div>
             <a class="icon-link cart-link" href="cart.php" aria-label="Shopping cart">♧<span><?= cart_count() ?></span></a>
             <?php if ($user): ?>
                 <a class="account-link" href="account.php">Hi, <?= e(explode(' ', $user['full_name'])[0]) ?></a>

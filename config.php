@@ -9,6 +9,14 @@ const DB_HOST = '127.0.0.1';
 const DB_NAME = 'golden_eggs';
 const DB_USER = 'root';
 const DB_PASS = '';
+const LOW_STOCK_THRESHOLD = 5;
+
+header('X-Frame-Options: SAMEORIGIN');
+header('X-Content-Type-Options: nosniff');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+    header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+}
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_set_cookie_params([
@@ -80,6 +88,28 @@ function db(): PDO
 function e(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
+}
+
+function money(float|int|string $amount): string
+{
+    return 'KSh ' . number_format((float) $amount, 2);
+}
+
+function stock_message(int $stock): string
+{
+    if ($stock <= 0) return 'Currently unavailable';
+    if ($stock <= LOW_STOCK_THRESHOLD) return 'Only ' . $stock . ' left';
+    return 'In stock';
+}
+
+function rate_limit(string $key, int $limit = 8, int $window = 900): bool
+{
+    $now = time();
+    $bucket = $_SESSION['rate_limits'][$key] ?? ['started' => $now, 'attempts' => 0];
+    if ($now - $bucket['started'] >= $window) $bucket = ['started' => $now, 'attempts' => 0];
+    $bucket['attempts']++;
+    $_SESSION['rate_limits'][$key] = $bucket;
+    return $bucket['attempts'] <= $limit;
 }
 
 function csrf_token(): string
