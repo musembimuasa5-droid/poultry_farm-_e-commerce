@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 const APP_NAME = 'Golden Eggs & Chicks Farm';
 const APP_TAGLINE = 'Fresh farm eggs & healthy chicks delivered to your door.';
-const BASE_URL = '/';
+const BASE_URL = '/poultry_farm-_e-commerce/';
 const DB_HOST = '127.0.0.1';
 const DB_NAME = 'golden_eggs';
 const DB_USER = 'root';
