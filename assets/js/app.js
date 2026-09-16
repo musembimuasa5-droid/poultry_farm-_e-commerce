@@ -26,10 +26,15 @@ const shopSearch = document.querySelector('.shop-toolbar input[name="q"]');
 const shopGrid = document.querySelector('.shop-toolbar')?.nextElementSibling;
 if (shopSearch && shopGrid) {
   const samples = ['Layers mash 10kg', 'Kienyeji day-old chicks', 'Kienyeji fertile eggs', 'Farm crate', 'Growers mash', 'Calcium supplement', 'Poultry feeder', 'Chick mash', 'Layers starter pack'];
+  const shopForm = shopSearch.closest('form');
+  const shopDropdown = document.createElement('div');
+  shopDropdown.className = 'shop-search-dropdown';
+  shopSearch.parentElement.classList.add('shop-search-field');
+  shopSearch.parentElement.appendChild(shopDropdown);
   const sampleBar = document.createElement('div');
   sampleBar.className = 'search-samples';
   sampleBar.innerHTML = '<span>Try:</span>' + samples.map(sample => `<button type="button" data-search-sample="${sample}">${sample}</button>`).join('');
-  shopSearch.closest('form').after(sampleBar);
+  shopForm.after(sampleBar);
   let shopTimer;
   const filterShopCards = () => {
     const query = shopSearch.value.trim().toLowerCase();
@@ -39,8 +44,21 @@ if (shopSearch && shopGrid) {
     const count = document.querySelector('.shop-toolbar strong');
     if (count) count.textContent = `${visible} products`;
   };
-  shopSearch.addEventListener('input', () => { clearTimeout(shopTimer); shopTimer = setTimeout(filterShopCards, 300); });
+  shopSearch.addEventListener('input', () => {
+    clearTimeout(shopTimer);
+    const query = shopSearch.value.trim();
+    if (query.length < 2) { shopDropdown.classList.remove('open'); shopDropdown.innerHTML = ''; filterShopCards(); return; }
+    shopDropdown.innerHTML = '<div class="skeleton" style="height:58px"></div><div class="skeleton" style="height:58px;margin-top:2px"></div>';
+    shopDropdown.classList.add('open');
+    shopTimer = setTimeout(async () => {
+      filterShopCards();
+      const response = await fetch(`search.php?q=${encodeURIComponent(query)}`);
+      const products = await response.json();
+      shopDropdown.innerHTML = products.length ? products.map(product => `<a class="shop-search-result" href="product.php?id=${product.id}"><img src="${product.image || 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=120&q=70'}" alt="" width="48" height="42"><span>${product.name}<small>KSh ${Number(product.price).toLocaleString()}</small></span></a>`).join('') : '<div class="shop-search-empty">No matching products found.</div>';
+    }, 300);
+  });
   sampleBar.addEventListener('click', event => { const button = event.target.closest('[data-search-sample]'); if (!button) return; shopSearch.value = button.dataset.searchSample; filterShopCards(); });
+  document.addEventListener('click', event => { if (!shopSearch.parentElement.contains(event.target)) shopDropdown.classList.remove('open'); });
 }
 document.querySelectorAll('[data-gallery-image]').forEach(button => button.addEventListener('click', () => {
   const image = document.querySelector('#main-product-image');
