@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded',()=>{const toggle=document.querySelector('.menu-toggle'),nav=document.querySelector('.main-nav');if(toggle&&nav){toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',open)})}const top=document.querySelector('.back-top');if(top){window.addEventListener('scroll',()=>{top.style.display=scrollY>450?'block':'none'});top.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}))}document.querySelectorAll('[data-add-cart]').forEach(button=>button.addEventListener('click',async()=>{const id=button.dataset.addCart;const response=await fetch('cart.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','X-Requested-With':'XMLHttpRequest'},body:`action=add&product_id=${id}&csrf=${button.dataset.csrf}`});const data=await response.json();if(data.success){button.textContent='Added ✓';setTimeout(()=>button.textContent='Add to cart',1400);const badge=document.querySelector('.cart-link span');if(badge)badge.textContent=data.count}}));});
+document.querySelectorAll('.home-product-card img').forEach(image=>image.addEventListener('error',()=>{image.src='https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=900&q=85'},{once:true}));
 const siteHeader = document.querySelector('.site-header');
 if (siteHeader) {
   window.addEventListener('scroll', () => {
@@ -80,6 +81,15 @@ if (recentStrip && recentIds.length) {
   fetch(`recent.php?ids=${recentIds.join(',')}`).then(response => response.json()).then(products => {
     recentStrip.innerHTML = products.map(product => `<a class="recent-product" href="product.php?id=${product.id}"><img src="${product.image || 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=300&q=80'}" alt="${product.name}" width="100" height="75" loading="lazy"><span>${product.name}</span></a>`).join('');
   });
+}
+if (recentStrip && !recentIds.length) {
+  const fallbackProducts = [...document.querySelectorAll('.home-product-card')].slice(0, 4).map(card => ({
+    href: card.querySelector('a')?.href,
+    name: card.querySelector('h3')?.textContent.trim(),
+    price: card.querySelector('.price')?.textContent.trim(),
+    image: card.querySelector('img')?.src
+  }));
+  recentStrip.innerHTML = fallbackProducts.map(product => `<a class="recent-product" href="${product.href}"><img src="${product.image}" alt="${product.name}" width="100" height="75" loading="lazy"><span>${product.name}<small>${product.price}</small><b>View product →</b></span></a>`).join('');
 }
 const guestCart = localStorage.getItem('guestCart');
 if (guestCart) {
