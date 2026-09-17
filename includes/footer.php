@@ -70,9 +70,18 @@
     <div class="footer-grid">
       <div class="footer-col">
         <div class="footer-brand">
-          <img src="golden-egg.jpg" alt="Golden Eggs &amp; Chicks Farm logo" width="52" height="52" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
-          <div class="name"><strong>Golden Eggs &amp; Chicks</strong><span>FARM</span></div>
-        </div>
+          <div class="container nav-wrap">
+        <a class="brand" href="index.php" aria-label="Golden Eggs & Chicks Farm home page">
+            <img class="brand-logo" src="golden-egg.jpg" alt="Golden Eggs & Chicks Farm logo" width="160" height="64" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+            <span class="brand-fallback" aria-hidden="true">
+                <span class="brand-mark">✦</span>
+                <span class="brand-copy">
+                    <span class="brand-name">Golden Eggs</span>
+                    <small>&amp; Chicks Farm</small>
+                </span>
+            </span>
+        </a>
+
         <p class="tagline">Good food starts at the farm. We raise healthy birds and deliver honest freshness to your table.</p>
         <div class="social-row">
           <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>

@@ -98,28 +98,7 @@ $user = current_user();
                 <span class="cart-count"><?= cart_count() ?></span>
             </a>
         </div>
-
-        <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-    </div>
-
-    <div class="mobile-menu" aria-label="Mobile navigation">
-        <div class="container mobile-menu-inner">
-            <a href="index.php">Home</a>
-            <a href="shop.php">Shop</a>
-            <a href="about.php">About</a>
-            <a href="contact.php">Contact</a>
-            <?php if ($user): ?>
-                <a href="account.php">My Account</a>
-                <a href="logout.php">Logout</a>
-            <?php else: ?>
-                <a href="login.php">Account</a>
-            <?php endif; ?>
-        </div>
-    </div>
+        
 </header>
 <main>
 <?php if (!empty($_SESSION['flash'])): $notice = $_SESSION['flash']; unset($_SESSION['flash']); ?>
