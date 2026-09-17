@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded',()=>{const toggle=document.querySelector('.menu-toggle'),nav=document.querySelector('.main-nav');if(toggle&&nav){toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',open)})}const top=document.querySelector('.back-top');if(top){window.addEventListener('scroll',()=>{top.style.display=scrollY>450?'block':'none'});top.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}))}document.querySelectorAll('[data-add-cart]').forEach(button=>button.addEventListener('click',async()=>{const id=button.dataset.addCart;const response=await fetch('cart.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','X-Requested-With':'XMLHttpRequest'},body:`action=add&product_id=${id}&csrf=${button.dataset.csrf}`});const data=await response.json();if(data.success){button.textContent='Added ✓';setTimeout(()=>button.textContent='Add to cart',1400);const badge=document.querySelector('.cart-link span');if(badge)badge.textContent=data.count}}));});
 document.querySelectorAll('.home-product-card img').forEach(image=>image.addEventListener('error',()=>{image.src='https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=900&q=85'},{once:true}));
 const siteHeader = document.querySelector('.site-header');
+document.querySelectorAll('.home-product-card img').forEach(image => image.addEventListener('error', () => { image.src = 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=900&q=85'; }, { once: true }));
 if (siteHeader) {
   window.addEventListener('scroll', () => {
     siteHeader.classList.toggle('scrolled', window.scrollY > 40);
@@ -28,6 +29,13 @@ const shopGrid = document.querySelector('.shop-toolbar')?.nextElementSibling;
 if (shopSearch && shopGrid) {
   const samples = ['Layers mash 10kg', 'Kienyeji day-old chicks', 'Kienyeji fertile eggs', 'Farm crate', 'Growers mash', 'Calcium supplement', 'Poultry feeder', 'Chick mash', 'Layers starter pack'];
   const shopForm = shopSearch.closest('form');
+  const categorySelect = document.createElement('select');
+  categorySelect.className = 'shop-category-select';
+  categorySelect.setAttribute('aria-label', 'Choose a product category');
+  categorySelect.innerHTML = '<option value="">All categories</option>' + ['Fresh Eggs', 'Fertilized Eggs', 'Day-old Chicks', 'Broilers', 'Layers', 'Feed', 'Poultry Equipment'].map(category => `<option value="${category}">${category}</option>`).join('');
+  categorySelect.value = new URLSearchParams(window.location.search).get('category') || '';
+  categorySelect.addEventListener('change', () => { const params = new URLSearchParams(window.location.search); if (categorySelect.value) params.set('category', categorySelect.value); else params.delete('category'); params.delete('q'); window.location.href = `shop.php?${params.toString()}`; });
+  shopForm.prepend(categorySelect);
   const shopDropdown = document.createElement('div');
   shopDropdown.className = 'shop-search-dropdown';
   shopSearch.parentElement.classList.add('shop-search-field');
