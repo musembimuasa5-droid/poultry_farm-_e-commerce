@@ -1,12 +1,122 @@
-document.addEventListener('DOMContentLoaded',()=>{const toggle=document.querySelector('.menu-toggle'),nav=document.querySelector('.main-nav');if(toggle&&nav){toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',open)})}const top=document.querySelector('.back-top');if(top){window.addEventListener('scroll',()=>{top.style.display=scrollY>450?'block':'none'});top.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}))}document.querySelectorAll('[data-add-cart]').forEach(button=>button.addEventListener('click',async()=>{const id=button.dataset.addCart;const response=await fetch('cart.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','X-Requested-With':'XMLHttpRequest'},body:`action=add&product_id=${id}&csrf=${button.dataset.csrf}`});const data=await response.json();if(data.success){button.textContent='Added ✓';setTimeout(()=>button.textContent='Add to cart',1400);const badge=document.querySelector('.cart-link span');if(badge)badge.textContent=data.count}}));});
-document.querySelectorAll('.home-product-card img').forEach(image=>image.addEventListener('error',()=>{image.src='https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=900&q=85'},{once:true}));
-const siteHeader = document.querySelector('.site-header');
-document.querySelectorAll('.home-product-card img').forEach(image => image.addEventListener('error', () => { image.src = 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=900&q=85'; }, { once: true }));
-if (siteHeader) {
-  window.addEventListener('scroll', () => {
-    siteHeader.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const siteHeader = document.querySelector('.site-header');
+  const announcementMessages = [...document.querySelectorAll('.announcement-message')];
+  const mobileMenu = document.querySelector('.mobile-menu');
+  const menuToggle = document.querySelector('.menu-toggle');
+  const accountMenu = document.querySelector('.account-menu');
+  const shopMenu = document.querySelector('.nav-shop');
+
+  if (siteHeader) {
+    const syncHeaderState = () => siteHeader.classList.toggle('scrolled', window.scrollY > 36);
+    syncHeaderState();
+    window.addEventListener('scroll', syncHeaderState, { passive: true });
+  }
+
+  if (announcementMessages.length > 1) {
+    let activeIndex = 0;
+    const showAnnouncement = () => {
+      announcementMessages.forEach((message, index) => 
+        message.classList.toggle('is-visible', index === activeIndex)
+      );
+    };
+    showAnnouncement();
+    setInterval(() => {
+      activeIndex = (activeIndex + 1) % announcementMessages.length;
+      showAnnouncement();
+    }, 3000);
+  }
+
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      menuToggle.classList.toggle('is-open', isOpen);
+      menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    document.addEventListener('click', (event) => {
+      if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+        mobileMenu.classList.remove('open');
+        menuToggle.classList.remove('is-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  if (accountMenu) {
+    const accountButton = accountMenu.querySelector('.account-trigger');
+    if (accountButton) {
+      accountButton.addEventListener('click', () => {
+        accountMenu.classList.toggle('is-open');
+      });
+      document.addEventListener('click', (event) => {
+        if (!accountMenu.contains(event.target)) {
+          accountMenu.classList.remove('is-open');
+        }
+      });
+    }
+  }
+
+  if (shopMenu) {
+    const shopTrigger = shopMenu.querySelector('> a');
+    if (shopTrigger) {
+      shopTrigger.addEventListener('click', (event) => {
+        if (window.innerWidth > 860) {
+          event.preventDefault();
+          const open = !shopMenu.classList.contains('is-open');
+          shopMenu.classList.toggle('is-open', open);
+          shopTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+      });
+    }
+    document.addEventListener('click', (event) => {
+      if (!shopMenu.contains(event.target)) {
+        shopMenu.classList.remove('is-open');
+        if (shopTrigger) shopTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  const top = document.querySelector('.back-top');
+  if (top) {
+    window.addEventListener('scroll', () => {
+      top.style.display = scrollY > 450 ? 'block' : 'none';
+    });
+    top.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  document.querySelectorAll('[data-add-cart]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const id = button.dataset.addCart;
+      const response = await fetch('cart.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: `action=add&product_id=${id}&csrf=${button.dataset.csrf}`
+      });
+      const data = await response.json();
+      if (data.success) {
+        button.textContent = 'Added ✓';
+        setTimeout(() => { button.textContent = 'Add to cart'; }, 1400);
+        const badge = document.querySelector('.cart-link .cart-count');
+        if (badge) badge.textContent = data.count;
+
+        const toast = document.createElement('div');
+        toast.className = 'toast toast-success';
+        toast.textContent = 'Added to cart';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 1400);
+      }
+    });
+  });
+});
+
+document.querySelectorAll('.home-product-card img').forEach(image =>
+  image.addEventListener('error', () => {
+    image.src = 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=900&q=85';
+  }, { once: true })
+);
+
 const searchInput = document.querySelector('[data-live-search]');
 const searchResults = document.querySelector('[data-search-results]');
 let searchTimer;
@@ -14,49 +124,73 @@ if (searchInput && searchResults) {
   searchInput.addEventListener('input', () => {
     clearTimeout(searchTimer);
     const query = searchInput.value.trim();
-    if (query.length < 2) { searchResults.classList.remove('open'); searchResults.innerHTML = ''; return; }
+    if (query.length < 2) {
+      searchResults.classList.remove('open');
+      searchResults.innerHTML = '';
+      return;
+    }
     searchResults.innerHTML = '<div class="skeleton" style="height:42px"></div><div class="skeleton" style="height:42px;margin-top:2px"></div>';
     searchResults.classList.add('open');
     searchTimer = setTimeout(async () => {
       const response = await fetch(`search.php?q=${encodeURIComponent(query)}`);
       const products = await response.json();
-      searchResults.innerHTML = products.length ? products.map(product => `<a href="product.php?id=${product.id}">${product.name}<strong style="float:right">KSh ${Number(product.price).toLocaleString()}</strong></a>`).join('') : '<div style="padding:12px;font-size:.82rem">No products found.</div>';
-    }, 300);
+      searchResults.innerHTML = products.length
+        ? products.map(product => `<a href="product.php?id=${product.id}"><span>${product.name}</span><strong>KSh ${Number(product.price).toLocaleString()}</strong></a>`).join('')
+        : '<div style="padding:12px;font-size:.82rem">No products found.</div>';
+    }, 250);
+  });
+  document.addEventListener('click', (event) => {
+    if (!searchInput.parentElement?.contains(event.target)) {
+      searchResults.classList.remove('open');
+    }
   });
 }
+
 const shopSearch = document.querySelector('.shop-toolbar input[name="q"]');
 const shopGrid = document.querySelector('.shop-toolbar')?.nextElementSibling;
 if (shopSearch && shopGrid) {
-  const samples = ['Layers mash 10kg', 'Kienyeji day-old chicks', 'Kienyeji fertile eggs', 'Farm crate', 'Growers mash', 'Calcium supplement', 'Poultry feeder', 'Chick mash', 'Layers starter pack'];
   const shopForm = shopSearch.closest('form');
   const categorySelect = document.createElement('select');
   categorySelect.className = 'shop-category-select';
   categorySelect.setAttribute('aria-label', 'Choose a product category');
   categorySelect.innerHTML = '<option value="">All categories</option>' + ['Fresh Eggs', 'Fertilized Eggs', 'Day-old Chicks', 'Broilers', 'Layers', 'Feed', 'Poultry Equipment'].map(category => `<option value="${category}">${category}</option>`).join('');
   categorySelect.value = new URLSearchParams(window.location.search).get('category') || '';
-  categorySelect.addEventListener('change', () => { const params = new URLSearchParams(window.location.search); if (categorySelect.value) params.set('category', categorySelect.value); else params.delete('category'); params.delete('q'); window.location.href = `shop.php?${params.toString()}`; });
-  shopForm.prepend(categorySelect);
+  categorySelect.addEventListener('change', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (categorySelect.value) params.set('category', categorySelect.value); else params.delete('category');
+    params.delete('q');
+    window.location.href = `shop.php?${params.toString()}`;
+  });
+  shopForm?.prepend(categorySelect);
+
   const shopDropdown = document.createElement('div');
   shopDropdown.className = 'shop-search-dropdown';
   shopSearch.parentElement.classList.add('shop-search-field');
   shopSearch.parentElement.appendChild(shopDropdown);
-  const sampleBar = document.createElement('div');
-  sampleBar.className = 'search-samples';
-  sampleBar.innerHTML = '<span>Try:</span>' + samples.map(sample => `<button type="button" data-search-sample="${sample}">${sample}</button>`).join('');
-  shopForm.after(sampleBar);
+
   let shopTimer;
   const filterShopCards = () => {
     const query = shopSearch.value.trim().toLowerCase();
     const cards = [...shopGrid.querySelectorAll('.product-card')];
     let visible = 0;
-    cards.forEach(card => { const match = !query || card.textContent.toLowerCase().includes(query); card.hidden = !match; if (match) visible++; });
+    cards.forEach(card => {
+      const match = !query || card.textContent.toLowerCase().includes(query);
+      card.hidden = !match;
+      if (match) visible++;
+    });
     const count = document.querySelector('.shop-toolbar strong');
     if (count) count.textContent = `${visible} products`;
   };
+
   shopSearch.addEventListener('input', () => {
     clearTimeout(shopTimer);
     const query = shopSearch.value.trim();
-    if (query.length < 2) { shopDropdown.classList.remove('open'); shopDropdown.innerHTML = ''; filterShopCards(); return; }
+    if (query.length < 2) {
+      shopDropdown.classList.remove('open');
+      shopDropdown.innerHTML = '';
+      filterShopCards();
+      return;
+    }
     shopDropdown.innerHTML = '<div class="skeleton" style="height:58px"></div><div class="skeleton" style="height:58px;margin-top:2px"></div>';
     shopDropdown.classList.add('open');
     shopTimer = setTimeout(async () => {
@@ -64,25 +198,35 @@ if (shopSearch && shopGrid) {
       const response = await fetch(`search.php?q=${encodeURIComponent(query)}`);
       const products = await response.json();
       shopDropdown.innerHTML = products.length ? products.map(product => `<a class="shop-search-result" href="product.php?id=${product.id}"><img src="${product.image || 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=120&q=70'}" alt="" width="48" height="42"><span>${product.name}<small>KSh ${Number(product.price).toLocaleString()}</small></span></a>`).join('') : '<div class="shop-search-empty">No matching products found.</div>';
-    }, 300);
+    }, 250);
   });
-  sampleBar.addEventListener('click', event => { const button = event.target.closest('[data-search-sample]'); if (!button) return; shopSearch.value = button.dataset.searchSample; filterShopCards(); });
-  document.addEventListener('click', event => { if (!shopSearch.parentElement.contains(event.target)) shopDropdown.classList.remove('open'); });
+
+  document.addEventListener('click', (event) => {
+    if (!shopSearch.parentElement.contains(event.target)) {
+      shopDropdown.classList.remove('open');
+    }
+  });
 }
+
 document.querySelectorAll('[data-gallery-image]').forEach(button => button.addEventListener('click', () => {
   const image = document.querySelector('#main-product-image');
   if (image) image.src = button.dataset.galleryImage;
 }));
+
 const productId = new URLSearchParams(window.location.search).get('id');
 if (productId) {
   const viewed = JSON.parse(localStorage.getItem('recentProducts') || '[]').filter(id => id !== productId);
-  viewed.unshift(productId); localStorage.setItem('recentProducts', JSON.stringify(viewed.slice(0, 6)));
+  viewed.unshift(productId);
+  localStorage.setItem('recentProducts', JSON.stringify(viewed.slice(0, 6)));
 }
+
 document.querySelectorAll('[data-add-cart]').forEach(button => button.addEventListener('click', () => {
   const localCart = JSON.parse(localStorage.getItem('guestCart') || '{}');
-  const id = button.dataset.addCart; localCart[id] = (localCart[id] || 0) + 1;
+  const id = button.dataset.addCart;
+  localCart[id] = (localCart[id] || 0) + 1;
   localStorage.setItem('guestCart', JSON.stringify(localCart));
 }));
+
 const recentStrip = document.querySelector('[data-recent-products]');
 const recentIds = JSON.parse(localStorage.getItem('recentProducts') || '[]');
 if (recentStrip && recentIds.length) {
@@ -99,9 +243,16 @@ if (recentStrip && !recentIds.length) {
   }));
   recentStrip.innerHTML = fallbackProducts.map(product => `<a class="recent-product" href="${product.href}"><img src="${product.image}" alt="${product.name}" width="100" height="75" loading="lazy"><span>${product.name}<small>${product.price}</small><b>View product →</b></span></a>`).join('');
 }
+
 const guestCart = localStorage.getItem('guestCart');
 if (guestCart) {
-  fetch('cart.php', { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'}, body: `action=sync&cart=${encodeURIComponent(guestCart)}&csrf=${encodeURIComponent(document.body.dataset.csrf)}` })
-    .then(() => { localStorage.removeItem('guestCart'); if (location.pathname.endsWith('/cart.php') && !sessionStorage.getItem('cartHydrated')) { sessionStorage.setItem('cartHydrated', '1'); location.reload(); } });
+  fetch('cart.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' }, body: `action=sync&cart=${encodeURIComponent(guestCart)}&csrf=${encodeURIComponent(document.body.dataset.csrf)}` })
+    .then(() => {
+      localStorage.removeItem('guestCart');
+      if (location.pathname.endsWith('/cart.php') && !sessionStorage.getItem('cartHydrated')) {
+        sessionStorage.setItem('cartHydrated', '1');
+        location.reload();
+      }
+    });
 }
-  if (!location.pathname.endsWith('/cart.php')) sessionStorage.removeItem('cartHydrated');
+if (!location.pathname.endsWith('/cart.php')) sessionStorage.removeItem('cartHydrated');

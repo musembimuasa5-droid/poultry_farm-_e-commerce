@@ -2,10 +2,10 @@
 <style>
   .site-footer{background:var(--green-dark);color:#fff;padding:72px 0 0}
   .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.3fr;gap:48px;padding-bottom:52px}
-  .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-  .footer-brand .mark{
-    width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#e08a00);
-    display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--green-dark);flex-shrink:0;
+  .footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .footer-brand img{
+    width:52px;height:52px;object-fit:contain;display:block;flex-shrink:0;
+    border-radius:12px;background:rgba(255,255,255,.08);padding:4px;
   }
   .footer-brand .name{font-family:Manrope,sans-serif;line-height:1.15}
   .footer-brand .name strong{display:block;font-size:1.02rem;font-weight:800}
@@ -70,7 +70,7 @@
     <div class="footer-grid">
       <div class="footer-col">
         <div class="footer-brand">
-          <div class="mark"><i class="fa-solid fa-egg"></i></div>
+          <img src="golden-egg.jpg" alt="Golden Eggs &amp; Chicks Farm logo" width="52" height="52" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
           <div class="name"><strong>Golden Eggs &amp; Chicks</strong><span>FARM</span></div>
         </div>
         <p class="tagline">Good food starts at the farm. We raise healthy birds and deliver honest freshness to your table.</p>
