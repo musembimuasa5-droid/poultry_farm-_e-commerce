@@ -22,21 +22,27 @@ $user = current_user();
     <script defer src="<?= e(BASE_URL) ?>assets/js/app.js?v=<?= filemtime(__DIR__ . '/../assets/js/app.js') ?>"></script>
 </head>
 <body data-csrf="<?= e(csrf_token()) ?>" data-authenticated="<?= $user ? '1' : '0' ?>">
+<div class="site-topline">
+    <div class="container site-topline-inner">
+        <span>Healthy Poultry · Better Living</span>
+        <div><a href="tel:+254712345678"><?= e(FARM_PHONE) ?></a><a href="mailto:<?= e(FARM_EMAIL) ?>"><?= e(FARM_EMAIL) ?></a></div>
+    </div>
+</div>
 <div class="announcement-bar" aria-live="polite" aria-atomic="true">
     <div class="container announcement-inner">
-        <span class="announcement-message is-visible">Free delivery on orders over KSh 5,000</span>
-        <span class="announcement-message">Farm fresh, every morning</span>
-        <span class="announcement-message">Fresh eggs delivered to your door</span>
+        <span class="announcement-message is-visible">Free delivery on orders over KSh <?= number_format(FREE_DELIVERY_THRESHOLD) ?></span>
+        <span class="announcement-message">Green Garden Farm · Healthy Poultry · Better Living</span>
+        <span class="announcement-message">Local delivery across Nairobi and Kiambu</span>
     </div>
 </div>
 <header class="site-header">
     <div class="container nav-wrap">
-        <a class="brand" href="index.php" aria-label="Golden Eggs & Chicks Farm home page">
+        <a class="brand" href="index.php" aria-label="Green Garden Farm home page">
             <span class="brand-fallback brand-visible">
                 <span class="brand-mark" aria-hidden="true">✿</span>
                 <span class="brand-copy">
                     <span class="brand-name">Green Garden Farm</span>
-                    <small>Healthy Poultry • Better Living</small>
+                    <small>Healthy Poultry · Better Living</small>
                 </span>
             </span>
         </a>
@@ -72,6 +78,7 @@ $user = current_user();
                     <input type="search" data-live-search placeholder="Search eggs, chicks, feed..." aria-label="Search products">
                     <button type="button" class="search-submit" aria-label="Search products">Search</button>
                 </div>
+
                 <div class="search-results" data-search-results></div>
             </div>
 

@@ -28,7 +28,7 @@ function next_product_batch(PDO $pdo, int $productId): ?array
     $statement = $pdo->prepare(
         "SELECT batch_code, hatch_date, available_units
          FROM product_batches
-         WHERE product_id = ? AND status = 'open' AND available_units > 0
+         WHERE product_id = ? AND status = 'open' AND available_units > 0 AND hatch_date >= CURRENT_DATE()
          ORDER BY hatch_date ASC, id ASC
          LIMIT 1"
     );

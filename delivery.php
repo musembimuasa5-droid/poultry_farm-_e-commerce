@@ -29,8 +29,10 @@ try {
     $pdo = db();
     $subtotal = cart_subtotal($pdo);
     if (isset($_POST['product_id'])) {
-        $productId = filter_var($_POST['product_id'], FILTER_VALIDATE_INT);
-        $quantity = filter_var($_POST['quantity'] ?? 1, FILTER_VALIDATE_INT);
+        $productIdInput = $_POST['product_id'];
+        $quantityInput = $_POST['quantity'] ?? 1;
+        $productId = is_scalar($productIdInput) ? filter_var($productIdInput, FILTER_VALIDATE_INT) : false;
+        $quantity = is_scalar($quantityInput) ? filter_var($quantityInput, FILTER_VALIDATE_INT) : false;
         if (!$productId || !$quantity || $quantity < 1) {
             http_response_code(422);
             echo json_encode(['success' => false, 'message' => 'Choose a valid product quantity.']);

@@ -12,6 +12,9 @@ const DB_PASS = '';
 const LOW_STOCK_THRESHOLD = 5;
 const DELIVERY_STANDARD_FEE = 250;
 const FREE_DELIVERY_THRESHOLD = 5000;
+const FARM_PHONE = '+254 712 345 678';
+const FARM_EMAIL = 'hello@goldeneggs.farm';
+const FARM_LOCATION = 'Limuru Road, Kiambu County';
 
 header('X-Frame-Options: SAMEORIGIN');
 header('X-Content-Type-Options: nosniff');
@@ -103,6 +106,24 @@ function stock_message(int $stock): string
     if ($stock <= 0) return 'Currently unavailable';
     if ($stock <= LOW_STOCK_THRESHOLD) return 'Only ' . $stock . ' left';
     return 'In stock';
+}
+
+function product_image_src(?string $image): string
+{
+    $placeholder = BASE_URL . 'assets/images/product-placeholder.svg';
+    $image = trim($image ?? '');
+    if ($image === '') {
+        return $placeholder;
+    }
+    if (preg_match('#^https://images\.unsplash\.com/#i', $image)) {
+        return $image;
+    }
+
+    $relativePath = ltrim(str_replace('\\', '/', $image), '/');
+    if (str_contains($relativePath, '..') || !is_file(__DIR__ . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relativePath))) {
+        return $placeholder;
+    }
+    return BASE_URL . $relativePath;
 }
 
 function rate_limit(string $key, int $limit = 8, int $window = 900): bool

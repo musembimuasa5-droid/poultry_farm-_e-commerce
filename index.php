@@ -53,7 +53,7 @@ try {
 
     $featured = $pdo->query(
         'SELECT p.*, c.name AS category_name, ' . $availableStockSql . ' AS available_stock,
-                (SELECT MIN(pb.hatch_date) FROM product_batches pb WHERE pb.product_id = p.id AND pb.status = \'open\' AND pb.available_units > 0) AS next_batch_date
+                (SELECT MIN(pb.hatch_date) FROM product_batches pb WHERE pb.product_id = p.id AND pb.status = \'open\' AND pb.available_units > 0 AND pb.hatch_date > CURRENT_DATE()) AS next_batch_date
          FROM products p
          JOIN categories c ON c.id = p.category_id
          WHERE p.featured = 1 AND ' . $availableStockSql . ' > 0
@@ -64,7 +64,7 @@ try {
     if (!$featured) {
         $featured = $pdo->query(
             'SELECT p.*, c.name AS category_name, ' . $availableStockSql . ' AS available_stock,
-                    (SELECT MIN(pb.hatch_date) FROM product_batches pb WHERE pb.product_id = p.id AND pb.status = \'open\' AND pb.available_units > 0) AS next_batch_date
+                    (SELECT MIN(pb.hatch_date) FROM product_batches pb WHERE pb.product_id = p.id AND pb.status = \'open\' AND pb.available_units > 0 AND pb.hatch_date > CURRENT_DATE()) AS next_batch_date
              FROM products p
              JOIN categories c ON c.id = p.category_id
              WHERE ' . $availableStockSql . ' > 0
@@ -157,7 +157,7 @@ include 'includes/header.php';
                     <article class="product-card home-product-card">
                         <a href="product.php?id=<?= (int) $product['id'] ?>" class="home-product-image-link">
                             <div class="product-image">
-                                <img src="<?= e($product['image'] ?: 'assets/images/product-placeholder.svg') ?>" alt="<?= e($product['name']) ?>" width="900" height="620" loading="lazy">
+                                <img src="<?= e(product_image_src($product['image'])) ?>" alt="<?= e($product['name']) ?>" width="900" height="620" loading="lazy">
                                 <span class="badge"><?= e($product['category_name']) ?></span>
                             </div>
                         </a>

@@ -132,9 +132,116 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  document.querySelectorAll('[data-price-range]').forEach(range => {
+    const minRange = range.querySelector('[data-price-min]');
+    const maxRange = range.querySelector('[data-price-max]');
+    const form = range.closest('form');
+    const minInput = form?.querySelector('input[name="min_price"]:not([type="hidden"])');
+    const maxInput = form?.querySelector('input[name="max_price"]:not([type="hidden"])');
+    const syncPriceInputs = changed => {
+      let minimum = Number(minRange.value);
+      let maximum = Number(maxRange.value);
+      if (minimum > maximum) {
+        if (changed === minRange) maximum = minimum;
+        else minimum = maximum;
+      }
+      minRange.value = String(minimum);
+      maxRange.value = String(maximum);
+      if (minInput) minInput.value = minimum > Number(minRange.min) ? String(minimum) : '';
+      if (maxInput) maxInput.value = maximum < Number(maxRange.max) ? String(maximum) : '';
+    };
+    minRange.addEventListener('input', () => syncPriceInputs(minRange));
+    maxRange.addEventListener('input', () => syncPriceInputs(maxRange));
+  });
+
+  document.querySelectorAll('[data-delivery-checker]').forEach(checker => {
+    const form = checker.querySelector('.delivery-checker-form');
+    const result = checker.querySelector('[data-delivery-result]');
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const area = form.querySelector('[name="area"]').value;
+      if (!area) {
+        result.textContent = 'Select a delivery area to see your estimate.';
+        return;
+      }
+      result.textContent = 'Checking local delivery...';
+      const request = new URLSearchParams({
+        csrf: document.body.dataset.csrf || '',
+        area
+      });
+      if (checker.dataset.productId) {
+        const productCard = checker.closest('.product-detail') || document;
+        const quantityInput = productCard.querySelector('#product-quantity');
+        request.set('product_id', checker.dataset.productId);
+        request.set('quantity', String(Math.max(1, Number.parseInt(quantityInput?.value || '1', 10) || 1)));
+      }
+      try {
+        const response = await fetch('delivery.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: request
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.message || 'Delivery estimate unavailable.');
+        result.textContent = `${data.message} ${data.quote.remaining > 0 ? `Add ${formatMoney(data.quote.remaining)} for free delivery.` : ''}`;
+        document.querySelectorAll('[data-cart-delivery-fee]').forEach(node => {
+          node.textContent = data.quote.fee ? formatMoney(data.quote.fee) : 'Free';
+        });
+        document.querySelectorAll('[data-cart-grand-total]').forEach(node => {
+          node.textContent = formatMoney(data.subtotal + data.subtotal * 0.16 + data.quote.fee);
+        });
+      } catch (error) {
+        result.textContent = error.message || 'Delivery estimate unavailable.';
+      }
+    });
+  });
+
+  const checkoutDeliveryArea = document.querySelector('[data-checkout-delivery-area]');
+  if (checkoutDeliveryArea) {
+    checkoutDeliveryArea.addEventListener('change', async () => {
+      const feedback = document.querySelector('[data-checkout-delivery-feedback]');
+      const feeNode = document.querySelector('[data-checkout-delivery-fee]');
+      const totalNode = document.querySelector('[data-checkout-grand-total]');
+      if (!checkoutDeliveryArea.value) return;
+      feedback.textContent = 'Checking local delivery...';
+      try {
+        const response = await fetch('delivery.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            csrf: checkoutDeliveryArea.dataset.csrf || '',
+            area: checkoutDeliveryArea.value
+          })
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.message || 'Delivery estimate unavailable.');
+        feedback.textContent = data.message;
+        feeNode.textContent = data.quote.fee ? formatMoney(data.quote.fee) : 'Free';
+        totalNode.textContent = formatMoney(data.subtotal + data.subtotal * 0.16 + data.quote.fee);
+      } catch (error) {
+        feedback.textContent = error.message || 'Delivery estimate unavailable.';
+      }
+    });
+    if (checkoutDeliveryArea.value) checkoutDeliveryArea.dispatchEvent(new Event('change'));
+  }
+
+  document.querySelectorAll('[data-batch-countdown]').forEach(time => {
+    const releaseDate = new Date(`${time.dataset.batchCountdown}T00:00:00`);
+    const days = Math.ceil((releaseDate.getTime() - new Date().setHours(0, 0, 0, 0)) / 86400000);
+    const count = document.createElement('span');
+    count.className = 'batch-countdown';
+    count.textContent = days <= 0 ? 'Available today' : `${days} day${days === 1 ? '' : 's'} until release`;
+    time.insertAdjacentElement('afterend', count);
+  });
+
   document.querySelectorAll('[data-auto-submit]').forEach(select => {
     select.addEventListener('change', () => select.form.requestSubmit());
   });
+
+  const formatMoney = amount => `KSh ${Number(amount).toLocaleString('en-KE', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })}`;
 
   const shopGrid = document.querySelector('[data-shop-grid]');
   if (shopGrid) {

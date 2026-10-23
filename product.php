@@ -51,7 +51,7 @@ try {
 
 $pageTitle = $product['name'];
 include 'includes/header.php';
-$image = $product['image'] ?: 'assets/images/product-placeholder.svg';
+$image = product_image_src($product['image']);
 ?>
 <section class="section product-detail">
     <div class="container">
@@ -120,7 +120,7 @@ $image = $product['image'] ?: 'assets/images/product-placeholder.svg';
                         <article class="product-card">
                             <a href="product.php?id=<?= (int) $item['id'] ?>">
                                 <div class="product-image">
-                                    <img src="<?= e($item['image'] ?: 'assets/images/product-placeholder.svg') ?>" alt="<?= e($item['name']) ?>" width="700" height="500" loading="lazy">
+                                    <img src="<?= e(product_image_src($item['image'])) ?>" alt="<?= e($item['name']) ?>" width="700" height="500" loading="lazy">
                                 </div>
                             </a>
                             <div class="product-info">

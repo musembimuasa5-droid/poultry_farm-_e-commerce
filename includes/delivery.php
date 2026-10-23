@@ -38,7 +38,7 @@ function delivery_quote(string $area, float $subtotal): ?array
         'fee' => $free ? 0 : DELIVERY_STANDARD_FEE,
         'free' => $free,
         'threshold' => FREE_DELIVERY_THRESHOLD,
-        'remaining' => max(0, FREE_DELIVERY_THRESHOLD - (int) round($subtotal)),
+        'remaining' => max(0, FREE_DELIVERY_THRESHOLD - $subtotal),
     ];
 }
 

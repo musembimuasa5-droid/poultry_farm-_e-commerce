@@ -70,6 +70,9 @@ $where = [];
 $pageCount = 0;
 $firstResult = 0;
 $lastResult = 0;
+$availableStockSql = "(CASE WHEN p.batch_tracking = 1
+    THEN (SELECT COALESCE(SUM(pb.available_units), 0) FROM product_batches pb WHERE pb.product_id = p.id AND pb.status = 'open')
+    ELSE p.stock END)";
 
 try {
     $pdo = db();
@@ -136,7 +139,7 @@ try {
 
     $productStatement = $pdo->prepare(
         'SELECT p.*, c.name AS category_name, ' . $availableStockSql . ' AS available_stock,
-                (SELECT MIN(pb.hatch_date) FROM product_batches pb WHERE pb.product_id = p.id AND pb.status = \'open\' AND pb.available_units > 0) AS next_batch_date
+                (SELECT MIN(pb.hatch_date) FROM product_batches pb WHERE pb.product_id = p.id AND pb.status = \'open\' AND pb.available_units > 0 AND pb.hatch_date > CURRENT_DATE()) AS next_batch_date
          FROM products p
          JOIN categories c ON c.id = p.category_id' . $whereSql .
          ' ORDER BY ' . $allowedSorts[$sort] . ' LIMIT ? OFFSET ?'
@@ -169,9 +172,6 @@ $queryParams = [
     'per_page' => $perPage,
 ];
 $queryParams = array_filter($queryParams, static fn ($value): bool => $value !== '' && $value !== null);
-$availableStockSql = "(CASE WHEN p.batch_tracking = 1
-    THEN (SELECT COALESCE(SUM(pb.available_units), 0) FROM product_batches pb WHERE pb.product_id = p.id AND pb.status = 'open')
-    ELSE p.stock END)";
 $rangeMinimum = (int) floor((float) $defaultMinPrice);
 $rangeMaximum = max($rangeMinimum + 1, (int) ceil((float) $defaultMaxPrice));
 $pageUrl = static function (int $targetPage) use ($queryParams): string {
@@ -187,11 +187,6 @@ include 'includes/header.php';
         <p>Quality poultry products, fresh from our farm to your table.</p>
         <nav class="shop-breadcrumb" aria-label="Breadcrumb"><a href="index.php">Home</a><span aria-hidden="true">›</span><span aria-current="page">Shop</span></nav>
     </div>
-    <?php $batch = $product['batch_tracking'] && $product['next_batch_date'] ? ['hatch_date' => $product['next_batch_date']] : null; ?>
-    <?php include __DIR__ . '/includes/quality-badges.php'; ?>
-    <?php if ($batch): ?>
-        <p class="batch-release-note">Pre-order for <?= e(date('j F Y', strtotime($batch['hatch_date']))) ?></p>
-    <?php endif; ?>
     <div class="shop-banner-seal" aria-hidden="true"><strong>Fresh</strong><strong>Healthy</strong><strong>Reliable</strong></div>
 </section>
 
@@ -289,7 +284,7 @@ include 'includes/header.php';
                                 <article class="product-card shop-product-card">
                                     <a class="shop-product-image-link" href="product.php?id=<?= (int) $product['id'] ?>">
                                         <div class="product-image">
-                                            <img src="<?= e($product['image'] ?: 'assets/images/product-placeholder.svg') ?>" alt="<?= e($product['name']) ?>" width="700" height="500" loading="lazy">
+                                            <img src="<?= e(product_image_src($product['image'])) ?>" alt="<?= e($product['name']) ?>" width="700" height="500" loading="lazy">
                                             <span class="shop-stock-badge <?= $stock > 0 ? 'available' : 'unavailable' ?>">
                                                 <?php if ((int) $product['batch_tracking'] && $product['next_batch_date']): ?>
                                                     Next batch <?= e(date('j M', strtotime($product['next_batch_date']))) ?>
@@ -308,6 +303,11 @@ include 'includes/header.php';
                                             <span aria-hidden="true"><?= $stock > LOW_STOCK_THRESHOLD ? '✓' : '!' ?></span>
                                             <?= e(stock_message($stock)) ?>
                                         </div>
+                                        <?php $productBatch = $product['batch_tracking'] && $product['next_batch_date'] ? ['hatch_date' => $product['next_batch_date']] : null; ?>
+                                        <?php include __DIR__ . '/includes/quality-badges.php'; ?>
+                                        <?php if ($productBatch): ?>
+                                            <p class="batch-release-note">Pre-order for <?= e(date('j F Y', strtotime($productBatch['hatch_date']))) ?></p>
+                                        <?php endif; ?>
                                         <?php if ($stock > 0): ?>
                                             <div class="shop-product-actions">
                                                 <div class="shop-quantity-control" data-quantity-control>
@@ -355,9 +355,11 @@ include 'includes/header.php';
 
 <section class="shop-trust-band" aria-label="Our service">
     <div class="container shop-trust-grid">
-        <div><span aria-hidden="true">⌁</span><strong>Local delivery</strong><small>Nearby farm-to-home service</small></div>
-        <div><span aria-hidden="true">✓</span><strong>Carefully selected</strong><small>Products for home and flock</small></div>
-        <div><span aria-hidden="true">♡</span><strong>Here to help</strong><small>Friendly support from our team</small></div>
+        <div><span aria-hidden="true">⌁</span><strong>Free delivery</strong><small>On qualifying orders over KSh 5,000</small></div>
+        <div><span aria-hidden="true">✓</span><strong>Secure payments</strong><small>M-Pesa and bank options</small></div>
+        <div><span aria-hidden="true">♡</span><strong>Quality products</strong><small>Selected for your home and flock</small></div>
+        <div><span aria-hidden="true">☎</span><strong>Here to help</strong><small>Support from our farm team</small></div>
+        <div><span aria-hidden="true">★</span><strong>Trusted farm</strong><small>Local service across Nairobi &amp; Kiambu</small></div>
     </div>
 </section>
 <?php include 'includes/footer.php'; ?>

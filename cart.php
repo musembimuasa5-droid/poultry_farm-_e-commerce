@@ -204,8 +204,8 @@ include 'includes/header.php';
                 <?php $deliverySubtotal = $subtotal; include __DIR__ . '/includes/delivery-checker.php'; ?>
                 <div class="summary-line"><span>Subtotal</span><span><?= money($subtotal) ?></span></div>
                 <div class="summary-line"><span>Tax (16%)</span><span><?= money($tax) ?></span></div>
-                <div class="summary-line"><span>Delivery</span><span><?= $deliveryQuote ? ($shipping ? money($shipping) : 'Free') : 'Check your area' ?></span></div>
-                <div class="summary-line summary-total"><span>Estimated total</span><span><?= money($subtotal + $tax + $shipping) ?></span></div>
+                <div class="summary-line"><span>Delivery</span><span data-cart-delivery-fee><?= $deliveryQuote ? ($shipping ? money($shipping) : 'Free') : 'Check your area' ?></span></div>
+                <div class="summary-line summary-total"><span>Estimated total</span><span data-cart-grand-total><?= money($subtotal + $tax + $shipping) ?></span></div>
                 <?php if (!$deliveryQuote): ?><p class="delivery-note">Select your neighborhood above to get the correct local delivery fee.</p><?php endif; ?>
                 <div class="trust-row"><span>🔒 Secure payment</span><span>↺ Replacement promise</span><span>⌁ 1–2 day delivery</span></div>
                 <a class="btn btn-primary" style="width:100%;margin-top:15px" href="checkout.php">Continue to checkout →</a>

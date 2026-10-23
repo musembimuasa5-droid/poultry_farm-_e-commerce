@@ -115,9 +115,9 @@
           <span><i class="fa-solid fa-location-dot"></i>Limuru</span>
         </div>
         <div class="footer-contact">
-          <a href="tel:+254712345678">+254 712 345 678</a>
-          <a href="mailto:info@greengardenfarm.co.ke">info@greengardenfarm.co.ke</a>
-          <span>Nairobi, Kenya</span>
+          <a href="tel:+254712345678"><?= e(FARM_PHONE) ?></a>
+          <a href="mailto:<?= e(FARM_EMAIL) ?>"><?= e(FARM_EMAIL) ?></a>
+          <span><?= e(FARM_LOCATION) ?></span>
         </div>
       </div>
     </div>
