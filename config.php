@@ -2,19 +2,27 @@
 
 declare(strict_types=1);
 
+<<<<<<< HEAD
 const APP_NAME = 'Green Garden Farm';
 const APP_TAGLINE = 'Healthy Poultry • Better Living';
+=======
+const APP_NAME = 'Golden Eggs & Chicks Farm';
+const APP_TAGLINE = 'Fresh farm eggs & healthy chicks delivered to your door.';
+>>>>>>> origin/main
 const BASE_URL = '/poultry_farm-_e-commerce/';
 const DB_HOST = '127.0.0.1';
 const DB_NAME = 'golden_eggs';
 const DB_USER = 'root';
 const DB_PASS = '';
 const LOW_STOCK_THRESHOLD = 5;
+<<<<<<< HEAD
 const DELIVERY_STANDARD_FEE = 250;
 const FREE_DELIVERY_THRESHOLD = 5000;
 const FARM_PHONE = '+254 712 345 678';
 const FARM_EMAIL = 'hello@goldeneggs.farm';
 const FARM_LOCATION = 'Limuru Road, Kiambu County';
+=======
+>>>>>>> origin/main
 
 header('X-Frame-Options: SAMEORIGIN');
 header('X-Content-Type-Options: nosniff');
@@ -108,6 +116,7 @@ function stock_message(int $stock): string
     return 'In stock';
 }
 
+<<<<<<< HEAD
 function product_image_src(?string $image): string
 {
     $placeholder = BASE_URL . 'assets/images/product-placeholder.svg';
@@ -126,6 +135,8 @@ function product_image_src(?string $image): string
     return BASE_URL . $relativePath;
 }
 
+=======
+>>>>>>> origin/main
 function rate_limit(string $key, int $limit = 8, int $window = 900): bool
 {
     $now = time();

@@ -2,10 +2,17 @@
 <style>
   .site-footer{background:var(--green-dark);color:#fff;padding:72px 0 0}
   .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.3fr;gap:48px;padding-bottom:52px}
+<<<<<<< HEAD
   .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:18px}
   .footer-brand .mark{
     width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#e08a00);
     display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--green-dark);flex-shrink:0;
+=======
+  .footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .footer-brand img{
+    width:52px;height:52px;object-fit:contain;display:block;flex-shrink:0;
+    border-radius:12px;background:rgba(255,255,255,.08);padding:4px;
+>>>>>>> origin/main
   }
   .footer-brand .name{font-family:Manrope,sans-serif;line-height:1.15}
   .footer-brand .name strong{display:block;font-size:1.02rem;font-weight:800}
@@ -70,6 +77,7 @@
     <div class="footer-grid">
       <div class="footer-col">
         <div class="footer-brand">
+<<<<<<< HEAD
           <div class="mark" aria-hidden="true">✿</div>
           <div class="name"><strong>Green Garden Farm</strong><span>HEALTHY POULTRY • BETTER LIVING</span></div>
         </div>
@@ -78,6 +86,25 @@
           <a href="https://instagram.com/" aria-label="Instagram">IG</a>
           <a href="https://facebook.com/" aria-label="Facebook">f</a>
           <a href="https://wa.me/254712345678" aria-label="WhatsApp">WA</a>
+=======
+          <div class="container nav-wrap">
+        <a class="brand" href="index.php" aria-label="Golden Eggs & Chicks Farm home page">
+            <img class="brand-logo" src="golden-egg.jpg" alt="Golden Eggs & Chicks Farm logo" width="160" height="64" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+            <span class="brand-fallback" aria-hidden="true">
+                <span class="brand-mark">✦</span>
+                <span class="brand-copy">
+                    <span class="brand-name">Golden Eggs</span>
+                    <small>&amp; Chicks Farm</small>
+                </span>
+            </span>
+        </a>
+
+        <p class="tagline">Good food starts at the farm. We raise healthy birds and deliver honest freshness to your table.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+>>>>>>> origin/main
         </div>
       </div>
 
@@ -94,11 +121,18 @@
       <div class="footer-col">
         <h4>Shop by Category</h4>
         <ul>
+<<<<<<< HEAD
           <li><a href="shop.php?category=Broilers">Live Poultry</a></li>
           <li><a href="shop.php?category=Day-old+Chicks">Day-old Chicks</a></li>
           <li><a href="shop.php?category=Fresh+Eggs">Fresh Eggs</a></li>
           <li><a href="shop.php?category=Feed">Poultry Feed</a></li>
           <li><a href="shop.php?category=Poultry+Equipment">Poultry Supplies</a></li>
+=======
+          <li><a href="shop.php?category=Fresh+Eggs">Fresh Eggs</a></li>
+          <li><a href="shop.php?category=Day-old+Chicks">Day-old Chicks</a></li>
+          <li><a href="shop.php?category=Feed">Poultry Feed</a></li>
+          <li><a href="shop.php?category=Poultry+Equipment">Equipment</a></li>
+>>>>>>> origin/main
         </ul>
       </div>
 
@@ -114,20 +148,31 @@
           <span><i class="fa-solid fa-location-dot"></i>Kiambu</span>
           <span><i class="fa-solid fa-location-dot"></i>Limuru</span>
         </div>
+<<<<<<< HEAD
         <div class="footer-contact">
           <a href="tel:+254712345678"><?= e(FARM_PHONE) ?></a>
           <a href="mailto:<?= e(FARM_EMAIL) ?>"><?= e(FARM_EMAIL) ?></a>
           <span><?= e(FARM_LOCATION) ?></span>
         </div>
+=======
+>>>>>>> origin/main
       </div>
     </div>
   </div>
 
   <div class="footer-bottom">
     <div class="container">
+<<<<<<< HEAD
       <p>&copy; <?= date('Y') ?> Green Garden Farm. All rights reserved.</p>
       <div class="footer-bottom-links">
         <span class="payment-badges" aria-label="Payment options"><span>M-PESA</span><span>VISA</span><span>Mastercard</span><span>Equity</span></span>
+=======
+      <p>&copy; <?= date('Y') ?> Golden Eggs &amp; Chicks Farm. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Made for good food</a>
+>>>>>>> origin/main
       </div>
     </div>
   </div>

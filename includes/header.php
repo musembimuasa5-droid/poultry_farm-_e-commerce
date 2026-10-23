@@ -9,7 +9,11 @@ $user = current_user();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle) ?> | <?= e(APP_NAME) ?></title>
+<<<<<<< HEAD
     <meta name="description" content="<?= e($pageDescription ?? (APP_TAGLINE . ' Shop fresh eggs, fertilized eggs, healthy chicks and trusted poultry essentials from our family farm.')) ?>">
+=======
+    <meta name="description" content="<?= e(APP_TAGLINE) ?> Shop fresh eggs, fertilized eggs, healthy chicks and trusted poultry essentials from our family farm.">
+>>>>>>> origin/main
     <meta name="keywords" content="fresh eggs, chicks, poultry farm, fertilized eggs, Kenya">
     <meta property="og:title" content="<?= e($pageTitle) ?> | <?= e(APP_NAME) ?>">
     <meta property="og:description" content="<?= e(APP_TAGLINE) ?>">
@@ -22,6 +26,7 @@ $user = current_user();
     <script defer src="<?= e(BASE_URL) ?>assets/js/app.js?v=<?= filemtime(__DIR__ . '/../assets/js/app.js') ?>"></script>
 </head>
 <body data-csrf="<?= e(csrf_token()) ?>" data-authenticated="<?= $user ? '1' : '0' ?>">
+<<<<<<< HEAD
 <div class="site-topline">
     <div class="container site-topline-inner">
         <span>Healthy Poultry · Better Living</span>
@@ -33,16 +38,33 @@ $user = current_user();
         <span class="announcement-message is-visible">Free delivery on orders over KSh <?= number_format(FREE_DELIVERY_THRESHOLD) ?></span>
         <span class="announcement-message">Green Garden Farm · Healthy Poultry · Better Living</span>
         <span class="announcement-message">Local delivery across Nairobi and Kiambu</span>
+=======
+<div class="announcement-bar" aria-live="polite" aria-atomic="true">
+    <div class="container announcement-inner">
+        <span class="announcement-message is-visible">Free delivery on orders over KSh 5,000</span>
+        <span class="announcement-message">Farm fresh, every morning</span>
+        <span class="announcement-message">Fresh eggs delivered to your door</span>
+>>>>>>> origin/main
     </div>
 </div>
 <header class="site-header">
     <div class="container nav-wrap">
+<<<<<<< HEAD
         <a class="brand" href="index.php" aria-label="Green Garden Farm home page">
             <span class="brand-fallback brand-visible">
                 <span class="brand-mark" aria-hidden="true">✿</span>
                 <span class="brand-copy">
                     <span class="brand-name">Green Garden Farm</span>
                     <small>Healthy Poultry · Better Living</small>
+=======
+        <a class="brand" href="index.php" aria-label="Golden Eggs & Chicks Farm home page">
+            <img class="brand-logo" src="golden-egg.jpg" alt="Golden Eggs & Chicks Farm logo" width="160" height="64" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+            <span class="brand-fallback" aria-hidden="true">
+                <span class="brand-mark">✦</span>
+                <span class="brand-copy">
+                    <span class="brand-name">Golden Eggs</span>
+                    <small>&amp; Chicks Farm</small>
+>>>>>>> origin/main
                 </span>
             </span>
         </a>
@@ -56,15 +78,24 @@ $user = current_user();
                 <div class="nav-dropdown" role="menu" aria-label="Shop categories">
                     <a href="shop.php?category=Fresh+Eggs">Fresh Eggs</a>
                     <a href="shop.php?category=Day-old+Chicks">Day-old Chicks</a>
+<<<<<<< HEAD
                     <a href="shop.php?category=Broilers">Broilers</a>
                     <a href="shop.php?category=Layers">Layers</a>
                     <a href="shop.php?category=Feed">Poultry Feed</a>
                     <a href="shop.php?category=Poultry+Equipment">Poultry Equipment</a>
+=======
+                    <a href="shop.php?category=Poultry+Feed">Poultry Feed</a>
+                    <a href="shop.php?category=Farm+Equipment">Farm Equipment</a>
+>>>>>>> origin/main
                     <a href="shop.php?featured=1">Featured Products</a>
                 </div>
             </div>
             <div class="nav-item">
+<<<<<<< HEAD
                 <a class="<?= $active === 'about.php' ? 'active' : '' ?>" href="about.php">About Us</a>
+=======
+                <a class="<?= $active === 'about.php' ? 'active' : '' ?>" href="about.php">About</a>
+>>>>>>> origin/main
             </div>
             <div class="nav-item">
                 <a class="<?= $active === 'contact.php' ? 'active' : '' ?>" href="contact.php">Contact</a>
@@ -78,7 +109,10 @@ $user = current_user();
                     <input type="search" data-live-search placeholder="Search eggs, chicks, feed..." aria-label="Search products">
                     <button type="button" class="search-submit" aria-label="Search products">Search</button>
                 </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
                 <div class="search-results" data-search-results></div>
             </div>
 
@@ -105,6 +139,7 @@ $user = current_user();
                 <span aria-hidden="true">🛒</span>
                 <span class="cart-count"><?= cart_count() ?></span>
             </a>
+<<<<<<< HEAD
             <span class="cart-sync-feedback" data-cart-sync-feedback role="status" aria-live="polite"></span>
         </div>
 
@@ -134,6 +169,10 @@ $user = current_user();
             <?php endif; ?>
         </div>
     </div>
+=======
+        </div>
+        
+>>>>>>> origin/main
 </header>
 <main>
 <?php if (!empty($_SESSION['flash'])): $notice = $_SESSION['flash']; unset($_SESSION['flash']); ?>
