@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" role="img" aria-labelledby="title">
+  <title id="title">Farm-fresh poultry product</title>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#edf5e9"/>
+      <stop offset="1" stop-color="#d7e7d2"/>
+    </linearGradient>
+    <linearGradient id="egg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffdf4"/>
+      <stop offset="1" stop-color="#e8d9a8"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="520" fill="url(#sky)"/>
+  <circle cx="570" cy="112" r="52" fill="#fff3cf" opacity=".8"/>
+  <path d="M0 354c120-47 210-19 316 10 124 35 246-46 404-19v175H0z" fill="#b8d2ad"/>
+  <path d="M0 410c125-43 251 17 360 4 139-17 241-60 360-23v129H0z" fill="#91b98b"/>
+  <ellipse cx="360" cy="420" rx="176" ry="25" fill="#426c47" opacity=".16"/>
+  <path d="M283 380c0-78 35-148 77-148s77 70 77 148c0 51-31 83-77 83s-77-32-77-83z" fill="url(#egg)" stroke="#d6c48b" stroke-width="5"/>
+  <path d="M312 380c5-49 24-91 47-112" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="10" opacity=".8"/>
+  <path d="M251 449h218" stroke="#47764d" stroke-linecap="round" stroke-width="8"/>
+  <path d="M330 445l-10 18m70-18 10 18" fill="none" stroke="#47764d" stroke-linecap="round" stroke-width="6"/>
+  <circle cx="115" cy="116" r="5" fill="#fff" opacity=".8"/>
+  <circle cx="165" cy="175" r="4" fill="#fff" opacity=".75"/>
+  <circle cx="534" cy="222" r="5" fill="#fff" opacity=".8"/>
+</svg>

@@ -70,14 +70,14 @@
     <div class="footer-grid">
       <div class="footer-col">
         <div class="footer-brand">
-          <div class="mark"><i class="fa-solid fa-egg"></i></div>
-          <div class="name"><strong>Golden Eggs &amp; Chicks</strong><span>FARM</span></div>
+          <div class="mark" aria-hidden="true">✿</div>
+          <div class="name"><strong>Green Garden Farm</strong><span>HEALTHY POULTRY • BETTER LIVING</span></div>
         </div>
-        <p class="tagline">Good food starts at the farm. We raise healthy birds and deliver honest freshness to your table.</p>
+        <p class="tagline">Healthy poultry, fresh farm products and thoughtful service for your home and flock.</p>
         <div class="social-row">
-          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://instagram.com/" aria-label="Instagram">IG</a>
+          <a href="https://facebook.com/" aria-label="Facebook">f</a>
+          <a href="https://wa.me/254712345678" aria-label="WhatsApp">WA</a>
         </div>
       </div>
 
@@ -94,10 +94,11 @@
       <div class="footer-col">
         <h4>Shop by Category</h4>
         <ul>
-          <li><a href="shop.php?category=Fresh+Eggs">Fresh Eggs</a></li>
+          <li><a href="shop.php?category=Broilers">Live Poultry</a></li>
           <li><a href="shop.php?category=Day-old+Chicks">Day-old Chicks</a></li>
+          <li><a href="shop.php?category=Fresh+Eggs">Fresh Eggs</a></li>
           <li><a href="shop.php?category=Feed">Poultry Feed</a></li>
-          <li><a href="shop.php?category=Poultry+Equipment">Equipment</a></li>
+          <li><a href="shop.php?category=Poultry+Equipment">Poultry Supplies</a></li>
         </ul>
       </div>
 
@@ -113,17 +114,20 @@
           <span><i class="fa-solid fa-location-dot"></i>Kiambu</span>
           <span><i class="fa-solid fa-location-dot"></i>Limuru</span>
         </div>
+        <div class="footer-contact">
+          <a href="tel:+254712345678">+254 712 345 678</a>
+          <a href="mailto:info@greengardenfarm.co.ke">info@greengardenfarm.co.ke</a>
+          <span>Nairobi, Kenya</span>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="footer-bottom">
     <div class="container">
-      <p>&copy; <?= date('Y') ?> Golden Eggs &amp; Chicks Farm. All rights reserved.</p>
+      <p>&copy; <?= date('Y') ?> Green Garden Farm. All rights reserved.</p>
       <div class="footer-bottom-links">
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
-        <a href="#">Made for good food</a>
+        <span class="payment-badges" aria-label="Payment options"><span>M-PESA</span><span>VISA</span><span>Mastercard</span><span>Equity</span></span>
       </div>
     </div>
   </div>

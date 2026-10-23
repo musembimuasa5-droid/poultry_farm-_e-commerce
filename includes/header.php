@@ -9,7 +9,7 @@ $user = current_user();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle) ?> | <?= e(APP_NAME) ?></title>
-    <meta name="description" content="<?= e(APP_TAGLINE) ?> Shop fresh eggs, fertilized eggs, healthy chicks and trusted poultry essentials from our family farm.">
+    <meta name="description" content="<?= e($pageDescription ?? (APP_TAGLINE . ' Shop fresh eggs, fertilized eggs, healthy chicks and trusted poultry essentials from our family farm.')) ?>">
     <meta name="keywords" content="fresh eggs, chicks, poultry farm, fertilized eggs, Kenya">
     <meta property="og:title" content="<?= e($pageTitle) ?> | <?= e(APP_NAME) ?>">
     <meta property="og:description" content="<?= e(APP_TAGLINE) ?>">
@@ -32,12 +32,11 @@ $user = current_user();
 <header class="site-header">
     <div class="container nav-wrap">
         <a class="brand" href="index.php" aria-label="Golden Eggs & Chicks Farm home page">
-            <img class="brand-logo" src="golden-egg.jpg" alt="Golden Eggs & Chicks Farm logo" width="160" height="64" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
-            <span class="brand-fallback" aria-hidden="true">
-                <span class="brand-mark">✦</span>
+            <span class="brand-fallback brand-visible">
+                <span class="brand-mark" aria-hidden="true">✿</span>
                 <span class="brand-copy">
-                    <span class="brand-name">Golden Eggs</span>
-                    <small>&amp; Chicks Farm</small>
+                    <span class="brand-name">Green Garden Farm</span>
+                    <small>Healthy Poultry • Better Living</small>
                 </span>
             </span>
         </a>
@@ -51,13 +50,15 @@ $user = current_user();
                 <div class="nav-dropdown" role="menu" aria-label="Shop categories">
                     <a href="shop.php?category=Fresh+Eggs">Fresh Eggs</a>
                     <a href="shop.php?category=Day-old+Chicks">Day-old Chicks</a>
-                    <a href="shop.php?category=Poultry+Feed">Poultry Feed</a>
-                    <a href="shop.php?category=Farm+Equipment">Farm Equipment</a>
+                    <a href="shop.php?category=Broilers">Broilers</a>
+                    <a href="shop.php?category=Layers">Layers</a>
+                    <a href="shop.php?category=Feed">Poultry Feed</a>
+                    <a href="shop.php?category=Poultry+Equipment">Poultry Equipment</a>
                     <a href="shop.php?featured=1">Featured Products</a>
                 </div>
             </div>
             <div class="nav-item">
-                <a class="<?= $active === 'about.php' ? 'active' : '' ?>" href="about.php">About</a>
+                <a class="<?= $active === 'about.php' ? 'active' : '' ?>" href="about.php">About Us</a>
             </div>
             <div class="nav-item">
                 <a class="<?= $active === 'contact.php' ? 'active' : '' ?>" href="contact.php">Contact</a>
@@ -97,6 +98,7 @@ $user = current_user();
                 <span aria-hidden="true">🛒</span>
                 <span class="cart-count"><?= cart_count() ?></span>
             </a>
+            <span class="cart-sync-feedback" data-cart-sync-feedback role="status" aria-live="polite"></span>
         </div>
 
         <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
@@ -108,9 +110,14 @@ $user = current_user();
 
     <div class="mobile-menu" aria-label="Mobile navigation">
         <div class="container mobile-menu-inner">
+            <form class="mobile-search-form" action="shop.php" method="get">
+                <label class="shop-sr-only" for="mobile-product-search">Search products</label>
+                <input id="mobile-product-search" type="search" name="q" placeholder="Search products...">
+                <button type="submit" aria-label="Search products">Search</button>
+            </form>
             <a href="index.php">Home</a>
             <a href="shop.php">Shop</a>
-            <a href="about.php">About</a>
+            <a href="about.php">About Us</a>
             <a href="contact.php">Contact</a>
             <?php if ($user): ?>
                 <a href="account.php">My Account</a>

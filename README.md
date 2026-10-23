@@ -30,3 +30,11 @@ The application uses PDO prepared statements, password hashing, CSRF tokens, esc
 ### Add the expanded catalog to an existing database
 
 Import `database/catalog_seed.sql` in phpMyAdmin after the original schema. It adds more fertilized eggs, broilers, layers, poultry feeds and equipment without duplicating products already present.
+
+### Shop catalogue
+
+The shop uses the existing `products` and `categories` tables. It supports database-backed category counts, keyword search, price and stock filters, sorting, page-size selection, pagination, and grid/list views. Add or edit real inventory through the admin product manager; categories without products are still shown with a zero count. The storefront does not add demo inventory or a poultry-meat category unless those records exist in the database.
+
+Product cards and the cart enforce current stock on the server. Checkout rechecks and reserves stock inside the order transaction. The existing checkout choices are not a payment-provider integration; configure and test a payment provider before accepting online payments in production.
+
+For local verification, start Apache and MySQL in XAMPP and visit `http://localhost/poultry_farm-_e-commerce/` and `http://localhost/poultry_farm-_e-commerce/shop.php`. On the shop page, try a category, a price range, each availability option, sorting and page 2; add an in-stock item, change its quantity in the cart, then verify that a quantity above available stock is rejected. No database migration is required for these shop features.

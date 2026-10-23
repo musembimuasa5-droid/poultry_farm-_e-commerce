@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-const APP_NAME = 'Golden Eggs & Chicks Farm';
-const APP_TAGLINE = 'Fresh farm eggs & healthy chicks delivered to your door.';
+const APP_NAME = 'Green Garden Farm';
+const APP_TAGLINE = 'Healthy Poultry • Better Living';
 const BASE_URL = '/poultry_farm-_e-commerce/';
 const DB_HOST = '127.0.0.1';
 const DB_NAME = 'golden_eggs';
 const DB_USER = 'root';
 const DB_PASS = '';
 const LOW_STOCK_THRESHOLD = 5;
+const DELIVERY_STANDARD_FEE = 250;
+const FREE_DELIVERY_THRESHOLD = 5000;
 
 header('X-Frame-Options: SAMEORIGIN');
 header('X-Content-Type-Options: nosniff');
