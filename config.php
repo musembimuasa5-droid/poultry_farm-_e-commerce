@@ -2,142 +2,18 @@
 
 declare(strict_types=1);
 
-<<<<<<< HEAD
 const APP_NAME = 'Green Garden Farm';
-const APP_TAGLINE = 'Healthy Poultry • Better Living';
-=======
-const APP_NAME = 'Golden Eggs & Chicks Farm';
-const APP_TAGLINE = 'Fresh farm eggs & healthy chicks delivered to your door.';
->>>>>>> origin/main
-const BASE_URL = '/poultry_farm-_e-commerce/';
+const APP_TAGLINE = 'Healthy Poultry • Better Living';const BASE_URL = '/poultry_farm-_e-commerce/';
 const DB_HOST = '127.0.0.1';
 const DB_NAME = 'golden_eggs';
 const DB_USER = 'root';
 const DB_PASS = '';
 const LOW_STOCK_THRESHOLD = 5;
-<<<<<<< HEAD
 const DELIVERY_STANDARD_FEE = 250;
 const FREE_DELIVERY_THRESHOLD = 5000;
 const FARM_PHONE = '+254 712 345 678';
 const FARM_EMAIL = 'hello@goldeneggs.farm';
-const FARM_LOCATION = 'Limuru Road, Kiambu County';
-=======
->>>>>>> origin/main
-
-header('X-Frame-Options: SAMEORIGIN');
-header('X-Content-Type-Options: nosniff');
-header('Referrer-Policy: strict-origin-when-cross-origin');
-header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https://images.unsplash.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; frame-ancestors 'self'");
-if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
-    header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
-}
-
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_set_cookie_params([
-        'httponly' => true,
-        'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
-        'samesite' => 'Lax',
-    ]);
-    session_start();
-}
-
-function db(): PDO
-{
-    static $pdo;
-    if (!$pdo) {
-        $options = [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ];
-
-        try {
-            $pdo = new PDO(
-                'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
-                DB_USER,
-                DB_PASS,
-                $options
-            );
-        } catch (PDOException $exception) {
-            if ((int) $exception->errorInfo[1] !== 1049) {
-                throw new RuntimeException(
-                    'Unable to connect to MySQL. Check DB_HOST, DB_USER and DB_PASS in config.php.',
-                    0,
-                    $exception
-                );
-            }
-
-            try {
-                $server = new PDO('mysql:host=' . DB_HOST . ';charset=utf8mb4', DB_USER, DB_PASS, $options);
-                $server->exec('CREATE DATABASE IF NOT EXISTS `' . DB_NAME . '` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
-                $pdo = new PDO(
-                    'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
-                    DB_USER,
-                    DB_PASS,
-                    $options
-                );
-
-                $schemaPath = __DIR__ . '/database/schema.sql';
-                if (is_readable($schemaPath)) {
-                    $schema = file_get_contents($schemaPath);
-                    $statements = preg_split('/;\s*(?:\r?\n|$)/', $schema ?: '');
-                    foreach ($statements as $statement) {
-                        $statement = trim($statement);
-                        if ($statement !== '' && stripos($statement, 'CREATE DATABASE') !== 0 && stripos($statement, 'USE ') !== 0) {
-                            $pdo->exec($statement);
-                        }
-                    }
-                }
-            } catch (PDOException $bootstrapException) {
-                throw new RuntimeException(
-                    'The golden_eggs database does not exist and could not be created. Import database/schema.sql in phpMyAdmin, then reload this page.',
-                    0,
-                    $bootstrapException
-                );
-            }
-        }
-    }
-    return $pdo;
-}
-
-function e(?string $value): string
-{
-    return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
-}
-
-function money(float|int|string $amount): string
-{
-    return 'KSh ' . number_format((float) $amount, 2);
-}
-
-function stock_message(int $stock): string
-{
-    if ($stock <= 0) return 'Currently unavailable';
-    if ($stock <= LOW_STOCK_THRESHOLD) return 'Only ' . $stock . ' left';
-    return 'In stock';
-}
-
-<<<<<<< HEAD
-function product_image_src(?string $image): string
-{
-    $placeholder = BASE_URL . 'assets/images/product-placeholder.svg';
-    $image = trim($image ?? '');
-    if ($image === '') {
-        return $placeholder;
-    }
-    if (preg_match('#^https://images\.unsplash\.com/#i', $image)) {
-        return $image;
-    }
-
-    $relativePath = ltrim(str_replace('\\', '/', $image), '/');
-    if (str_contains($relativePath, '..') || !is_file(__DIR__ . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relativePath))) {
-        return $placeholder;
-    }
-    return BASE_URL . $relativePath;
-}
-
-=======
->>>>>>> origin/main
-function rate_limit(string $key, int $limit = 8, int $window = 900): bool
+const FARM_LOCATION = 'Limuru Road, Kiambu County';function rate_limit(string $key, int $limit = 8, int $window = 900): bool
 {
     $now = time();
     $bucket = $_SESSION['rate_limits'][$key] ?? ['started' => $now, 'attempts' => 0];
